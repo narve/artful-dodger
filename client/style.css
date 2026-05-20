@@ -188,6 +188,7 @@ html, body {
 
 #desc-text {
   flex: 1;
+  font-size: 26px;
   line-height: 1.75;
   color: var(--text);
   overflow-y: auto;
