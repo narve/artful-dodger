@@ -6,7 +6,8 @@
     "start": "SRC=/home/narve/code/art/images node server.js",
     "watch": "SRC=/home/narve/code/art/images WEBCAM_ENABLE=1 nodemon --legacy-watch server.js",
     "web-cam": "SRC=/home/narve/code/art/images node webcam.js",
-    "theatre": "bash theatre.sh"
+    "theatre": "bash theatre.sh",
+    "screen-record": "SRC=/home/narve/code/art/images WEBCAM_INTERVAL_MS=5000 WEBCAM_ENABLE=1 nodemon --legacy-watch server.js"
   },
   "dependencies": {
     "express": "^4.19.2"

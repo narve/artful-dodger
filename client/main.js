@@ -1,8 +1,9 @@
 'use strict'
 
 const API = 'http://localhost:3000'
-const POLL_INTERVAL = 10_000
 const TYPEWRITER_MS = 15
+
+let pollIntervalMs = 10_000
 
 const $ = id => document.getElementById(id)
 const stripExt = f => f.replace(/\.[^.]+$/, '')
@@ -21,7 +22,7 @@ const descContent   = $('desc-content')
 let currentFilename = null
 let typewriterTimer = null
 let countdownTimer  = null
-let secondsLeft     = POLL_INTERVAL / 1000
+let secondsLeft     = pollIntervalMs / 1000
 
 // ── Countdown ────────────────────────────────────────────────────────────────
 
@@ -31,9 +32,9 @@ function setCountdownText(s) {
   descCountdown.textContent = t
 }
 
-function startCountdown() {
+function startCountdown(seconds) {
   clearInterval(countdownTimer)
-  secondsLeft = POLL_INTERVAL / 1000
+  secondsLeft = seconds
   setCountdownText(secondsLeft)
   countdownTimer = setInterval(() => {
     secondsLeft--
@@ -107,31 +108,31 @@ function showIdle() {
 
 async function poll() {
   statusEl.textContent = 'SCANNING'
-  startCountdown()
 
-  let images
+  let data
   try {
     const res = await fetch(`${API}/images`)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    images = await res.json()
+    data = await res.json()
     statusEl.textContent = 'ONLINE'
+    pollIntervalMs = data.secondsToNextCapture * 1000
   } catch (err) {
     statusEl.textContent = 'NO SIGNAL'
+    startCountdown(pollIntervalMs / 1000)
+    setTimeout(poll, pollIntervalMs)
     return
   }
 
-  if (images.length === 0) { showIdle(); return }
+  startCountdown(data.secondsToNextCapture)
+  setTimeout(poll, pollIntervalMs)
 
-  const [latest, ...older] = images
+  if (data.images.length === 0) { showIdle(); return }
 
+  const [latest, ...older] = data.images
   setArchive(older.map(i => i.filename))
-
-  if (latest.filename !== currentFilename) {
-    showImage(latest)
-  }
+  if (latest.filename !== currentFilename) showImage(latest)
 }
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
 
 poll()
-setInterval(poll, POLL_INTERVAL)
