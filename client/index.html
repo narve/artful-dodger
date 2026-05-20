@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ART // VISUAL ANALYSIS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="scanlines"></div>
+
+  <header id="header">
+    <span class="label">SYS</span>
+    <span id="status">INITIALIZING</span>
+    <span class="spacer"></span>
+    <span class="label">NEXT SCAN</span>
+    <span id="countdown">--</span>
+  </header>
+
+  <div id="archive-strip">
+    <!-- thumbnails injected here -->
+  </div>
+
+  <main id="main">
+    <div id="image-panel">
+      <div id="image-wrap">
+        <img id="main-img" src="" alt="" />
+        <div id="idle-scan"></div>
+      </div>
+      <div id="image-label"></div>
+    </div>
+
+    <div id="desc-panel">
+      <div id="desc-header">
+        <span class="label">IDENT</span>
+        <span id="desc-filename">--</span>
+      </div>
+      <div id="desc-divider"></div>
+      <div id="desc-text"><span id="desc-content"></span><span id="cursor">█</span></div>
+    </div>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
