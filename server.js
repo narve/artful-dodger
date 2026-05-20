@@ -10,6 +10,7 @@ const SRC = process.env.SRC
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434'
 const LLM_MODEL = process.env.LLM_MODEL || 'moondream'
 const POLL_INTERVAL_MS = parseInt(process.env.POLL_INTERVAL_MS || '5000', 10)
+const CAPTURE_INTERVAL_S = Math.round(parseInt(process.env.WEBCAM_INTERVAL_MS || '10000', 10) / 1000)
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff', '.tif'])
 
@@ -57,7 +58,7 @@ app.get('/images', (_, res) => {
     .sort((a, b) => b.mtime - a.mtime)
     .slice(0, 5)
     .map(({ filename, description }) => ({ filename, description }))
-  res.json(images)
+  res.json({ secondsToNextCapture: CAPTURE_INTERVAL_S, images })
 })
 
 app.listen(PORT, () => {
@@ -68,19 +69,29 @@ app.listen(PORT, () => {
 
 // ── Background worker ─────────────────────────────────────────────────────────
 
+const OLLAMA_TIMEOUT_MS = parseInt(process.env.OLLAMA_TIMEOUT_MS || '60000', 10)
+
 async function callOllama(filename) {
   const b64 = fs.readFileSync(path.join(SRC, filename)).toString('base64')
   console.log(`[llm] → calling ${LLM_MODEL} for ${filename}`)
-  const res = await fetch(`${OLLAMA_URL}/api/generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: LLM_MODEL,
-      prompt: "Describe this image.",
-      images: [b64],
-      stream: false
+  const ac = new AbortController()
+  const timer = setTimeout(() => ac.abort(), OLLAMA_TIMEOUT_MS)
+  let res
+  try {
+    res = await fetch(`${OLLAMA_URL}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: LLM_MODEL,
+        prompt: "Describe this image.",
+        images: [b64],
+        stream: false
+      }),
+      signal: ac.signal
     })
-  })
+  } finally {
+    clearTimeout(timer)
+  }
   console.log(`[llm] HTTP status: ${res.status}`)
   if (!res.ok) throw new Error(`Ollama HTTP ${res.status}`)
   const raw = await res.text()
