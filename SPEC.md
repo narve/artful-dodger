@@ -2,11 +2,10 @@
 
 ## Overview
 
-A local image display tool with a sci-fi aesthetic. The server monitors a configured source
-folder for images, auto-generates plain-text descriptions using a local LLM (Ollama), and
-exposes them via a REST API. The client polls the API every 10 seconds and presents the
-latest described image full-screen with a typewriter description effect, with the 4 previous
-images shown as thumbnails.
+A local image display tool with a sci-fi aesthetic. The server monitors a configured source folder for images,
+auto-generates plain-text descriptions using a local LLM (Ollama), and exposes them via a REST API. The client
+polls the API every 10 seconds and presents the latest described image full-screen with a typewriter description
+effect, with the 4 previous images shown as thumbnails.
 
 ---
 
@@ -36,14 +35,14 @@ project/
 
 ### Configuration (environment variables)
 
-| Variable           | Description                                        | Default                  |
-|--------------------|----------------------------------------------------|--------------------------|
-| `SRC`              | Absolute path to the image folder                  | *(required)*             |
-| `PORT`             | HTTP port                                          | `3000`                   |
-| `OLLAMA_URL`       | Base URL for the local Ollama instance             | `http://localhost:11434` |
-| `LLM_MODEL`        | Ollama model to use for descriptions               | `moondream`              |
-| `POLL_INTERVAL_MS` | How often the worker checks for undescribed images | `5000`                   |
-| `WEBCAM_ENABLE`    | Set to `1` to spawn `webcam.js` as a child process | *(unset)*                |
+| Variable            | Description                                        | Default                  |
+| ------------------- | -------------------------------------------------- | ------------------------ |
+| `SRC`               | Absolute path to the image folder                  | *(required)*             |
+| `PORT`              | HTTP port                                          | `3000`                   |
+| `OLLAMA_URL`        | Base URL for the local Ollama instance             | `http://localhost:11434` |
+| `LLM_MODEL`         | Ollama model to use for descriptions               | `moondream`              |
+| `POLL_INTERVAL_MS`  | How often the worker checks for undescribed images | `5000`                   |
+| `WEBCAM_ENABLE`     | Set to `1` to spawn `webcam.js` as a child process | *(unset)*                |
 
 ### Supported image formats
 
@@ -55,8 +54,7 @@ project/
 
 #### `GET /images`
 
-Returns the 5 most recently captured described images, sorted by file modification time
-descending (newest first).
+Returns the 5 most recently captured described images, sorted by file modification time descending (newest first).
 
 **Response** `200 OK`
 

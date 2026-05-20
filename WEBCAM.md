@@ -1,16 +1,17 @@
 # Webcam Capture
 
-`webcam.js` captures a JPEG from a v4l2 camera at a fixed interval and saves it to the image folder, where the server picks it up for LLM description.
+`webcam.js` captures a JPEG from a v4l2 camera at a fixed interval and saves it to the image folder,
+where the server picks it up for LLM description.
 
 ## Configuration
 
-| Variable | Default | Description |
-|---|---|---|
-| `WEBCAM_INTERVAL_MS` | `10000` | Capture interval in milliseconds |
-| `SRC` | `./images` | Output folder |
-| `WEBCAM_DEVICE` | auto (`/dev/video0`) | Camera device path |
-| `WEBCAM_PREFIX` | `stage` | Filename prefix |
-| `WEBCAM_ENABLE` | _(unset)_ | Set to `1` to auto-start from the server |
+| Variable             | Default           | Description                                  |
+| -------------------- | ----------------- | -------------------------------------------- |
+| `WEBCAM_INTERVAL_MS` | `10000`           | Capture interval in milliseconds             |
+| `SRC`                | `./images`        | Output folder                                |
+| `WEBCAM_DEVICE`      | auto (`/dev/video0`) | Camera device path                        |
+| `WEBCAM_PREFIX`      | `stage`           | Filename prefix                              |
+| `WEBCAM_ENABLE`      | *(unset)*         | Set to `1` to auto-start from the server     |
 
 Filenames are saved as `<PREFIX>_YYYY-MM-DD_HH-MM-SS.jpg` (UTC timestamp).
 
