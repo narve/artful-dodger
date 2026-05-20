@@ -7,6 +7,7 @@ const path = require('path')
 const INTERVAL_MS = parseInt(process.env.WEBCAM_INTERVAL_MS || '5000', 10)
 const OUT_DIR     = process.env.SRC || path.resolve(__dirname, 'images')
 const DEVICE      = process.env.WEBCAM_DEVICE || null
+const PREFIX      = process.env.WEBCAM_PREFIX || 'stage'
 
 function findFirstCamera() {
   try {
@@ -35,7 +36,7 @@ console.log(`[webcam] interval: ${INTERVAL_MS / 1000}s`)
 
 function capture() {
   const ts = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 19)
-  const filename = `webcam_${ts}.jpg`
+  const filename = `${PREFIX}_${ts}.jpg`
   const outPath  = path.join(OUT_DIR, filename)
   try {
     execFileSync('ffmpeg', [
