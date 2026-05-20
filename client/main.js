@@ -108,20 +108,17 @@ async function poll() {
     return
   }
 
-  const described = images.filter(i => i.described)
-  if (described.length === 0) { showIdle(); return }
+  // server returns newest-first, already filtered to described
+  if (images.length === 0) { showIdle(); return }
 
-  // find the last filename alphabetically that we haven't shown yet
-  const unseen = described.filter(i => {
-    if (!currentFilename) return true
-    return i.filename > currentFilename
-  })
+  const [latest, ...older] = images
 
-  if (unseen.length > 0) {
-    showImage(unseen[unseen.length - 1])
-  } else if (!currentFilename) {
-    // first load — show the latest described image
-    showImage(described[described.length - 1])
+  if (!currentFilename) {
+    // seed archive oldest-first so newest ends up leftmost
+    for (let i = older.length - 1; i >= 0; i--) pushToArchive(older[i].filename)
+    showImage(latest)
+  } else if (latest.filename !== currentFilename) {
+    showImage(latest)
   }
 }
 

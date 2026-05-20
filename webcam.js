@@ -4,7 +4,7 @@ const { execFileSync } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
-const INTERVAL_MS = parseInt(process.env.WEBCAM_INTERVAL_MS || '5000', 10)
+const INTERVAL_MS = parseInt(process.env.WEBCAM_INTERVAL_MS || '10000', 10)
 const OUT_DIR     = process.env.SRC || path.resolve(__dirname, 'images')
 const DEVICE      = process.env.WEBCAM_DEVICE || null
 const PREFIX      = process.env.WEBCAM_PREFIX || 'stage'
@@ -38,17 +38,19 @@ function capture() {
   const ts = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 19)
   const filename = `${PREFIX}_${ts}.jpg`
   const outPath  = path.join(OUT_DIR, filename)
+  console.log(`[webcam] capturing → ${outPath}`)
   try {
     execFileSync('ffmpeg', [
       '-f', 'v4l2', '-i', device,
       '-vframes', '1',
-      '-loglevel', 'quiet',
       '-y', outPath
-    ], { stdio: 'pipe' })
-    console.log(`[webcam] captured ${filename}`)
+    ], { stdio: 'pipe', timeout: 3_000 })
+    const size = fs.statSync(outPath).size
+    console.log(`[webcam] ok — ${filename} (${size} bytes)`)
   } catch (err) {
-    const msg = err.stderr ? err.stderr.toString().trim() : err.message
-    console.error(`[webcam] capture error: ${msg}`)
+    console.error(`[webcam] ffmpeg failed (exit ${err.status ?? 'timeout'})`)
+    if (err.stdout?.length) console.error(`[webcam] stdout: ${err.stdout.toString().trim()}`)
+    if (err.stderr?.length) console.error(`[webcam] stderr: ${err.stderr.toString().trim()}`)
   }
 }
 

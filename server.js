@@ -36,10 +36,10 @@ function readDescription(filename) {
 function listImages() {
   return fs.readdirSync(SRC)
     .filter(isImage)
-    .sort()
     .map(filename => {
       const description = readDescription(filename)
-      return { filename, described: description !== null, description }
+      const mtime = fs.statSync(path.join(SRC, filename)).mtimeMs
+      return { filename, described: description !== null, description, mtime }
     })
 }
 
@@ -51,7 +51,14 @@ app.use((_, res, next) => { res.setHeader('Access-Control-Allow-Origin', '*'); n
 app.use(express.static(path.resolve(__dirname, 'client')))
 app.use('/images/files', express.static(SRC))
 
-app.get('/images', (_, res) => res.json(listImages()))
+app.get('/images', (_, res) => {
+  const images = listImages()
+    .filter(i => i.described)
+    .sort((a, b) => b.mtime - a.mtime)
+    .slice(0, 5)
+    .map(({ filename, description }) => ({ filename, description }))
+  res.json(images)
+})
 
 
 app.listen(PORT, () => {
