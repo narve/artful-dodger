@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 
 const INTERVAL_MS = parseInt(process.env.WEBCAM_INTERVAL_MS || '5000', 10)
-const OUT_DIR     = process.env.SRC || path.resolve(__dirname, '../../images')
+const OUT_DIR     = process.env.SRC || path.resolve(__dirname, 'images')
 const DEVICE      = process.env.WEBCAM_DEVICE || null
 
 function findFirstCamera() {

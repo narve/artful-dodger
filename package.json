@@ -1,10 +1,10 @@
 {
   "name": "art-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "SRC=/home/narve/code/art/images node index.js",
-    "watch": "SRC=/home/narve/code/art/images nodemon --legacy-watch index.js",
+    "start": "SRC=/home/narve/code/art/images node server.js",
+    "watch": "SRC=/home/narve/code/art/images nodemon --legacy-watch server.js",
     "web-cam": "SRC=/home/narve/code/art/images node webcam.js"
   },
   "dependencies": {

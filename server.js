@@ -48,7 +48,7 @@ function listImages() {
 const app = express()
 
 app.use((_, res, next) => { res.setHeader('Access-Control-Allow-Origin', '*'); next() })
-app.use(express.static(path.resolve(__dirname, '../../client')))
+app.use(express.static(path.resolve(__dirname, 'client')))
 app.use('/images/files', express.static(SRC))
 
 app.get('/images', (_, res) => res.json(listImages()))
