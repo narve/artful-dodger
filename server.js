@@ -60,7 +60,6 @@ app.get('/images', (_, res) => {
   res.json(images)
 })
 
-
 app.listen(PORT, () => {
   console.log(`[server] http://localhost:${PORT}`)
   console.log(`[server] SRC: ${SRC}`)

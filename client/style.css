@@ -4,8 +4,7 @@
 
 :root {
   --accent: #00ffe0;
-  --accent-dim: rgba(0, 255, 224, 0.15);
-  --accent-border: rgba(0, 255, 224, 0.35);
+--accent-border: rgba(0, 255, 224, 0.35);
   --bg: #060a0d;
   --panel-bg: rgba(0, 255, 224, 0.03);
   --text: #c8fff8;
@@ -80,14 +79,6 @@ html, body {
 }
 .thumb:hover { opacity: 0.85; }
 
-/* entering from main panel */
-.thumb.entering {
-  animation: thumb-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-@keyframes thumb-enter {
-  from { transform: scale(1.8) translateX(-30px); opacity: 0; }
-  to   { transform: scale(1) translateX(0);       opacity: 0.55; }
-}
 
 /* ── Main area ── */
 #main {
