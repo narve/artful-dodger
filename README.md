@@ -1,7 +1,11 @@
 # Art Display
 
-A local, full-screen image display with a sci-fi aesthetic. A webcam captures stills at a fixed interval;
-a local LLM (Ollama/moondream) describes each image; the browser shows the latest image with a typewriter
+This program uses a webcamera and a local LLM to create a dynamic art display.
+
+It captures images at regular intervals,
+generates descriptions using an LLM, and serves them through a web interface.
+
+The web interface has a sci-fi aesthetic, and shows the latest image with a typewriter
 description and a strip of recent thumbnails.
 
 ## Quick start
