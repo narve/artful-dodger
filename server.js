@@ -101,7 +101,7 @@ async function runWorker() {
   try {
     const all = listImages()
     const described = all.filter(i => i.described)
-    const pending = all.filter(i => !i.described)
+    const pending = all.filter(i => !i.described).sort((a, b) => b.mtime - a.mtime)
     console.log(`[worker] scan: ${all.length} image(s) — ${described.length} described, ${pending.length} pending`)
     pending.forEach(i => console.log(`[worker]   pending: ${i.filename}`))
     for (const img of pending) {
