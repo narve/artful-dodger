@@ -53,13 +53,6 @@ app.use('/images/files', express.static(SRC))
 
 app.get('/images', (_, res) => res.json(listImages()))
 
-app.get('/images/:filename', (req, res) => {
-  const { filename } = req.params
-  if (!isImage(filename) || !fs.existsSync(path.join(SRC, filename)))
-    return res.status(404).json({ error: 'Not found' })
-  const description = readDescription(filename)
-  res.json({ filename, described: description !== null, description })
-})
 
 app.listen(PORT, () => {
   console.log(`[server] http://localhost:${PORT}`)
