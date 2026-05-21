@@ -1,12 +1,16 @@
 # Art Display
 
-This program uses a webcamera and a local LLM to create a dynamic art display.
+This program uses a webcamera and a local AI (LLM) to create a dynamic art display.
 
-It captures images at regular intervals,
+It captures images from a web camera at regular intervals,
 generates descriptions using an LLM, and serves them through a web interface.
 
 The web interface has a sci-fi aesthetic, and shows the latest image with a typewriter
 description and a strip of recent thumbnails.
+
+## Screenshots
+
+![Art Display Interface](screenshots/living-room.png)
 
 ## Quick start
 
